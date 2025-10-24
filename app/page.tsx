@@ -166,7 +166,7 @@ const scaleIn = {
 
 // --- COMPONENTS ---
 const Ticker = () => {
-  const tickerItems = "SOFTWARE DEVELOPER ✦ FULL STACK ENGINEER ✦ WEB & MOBILE APPS ✦ CLOUD ARCHITECTURE ✦ ";
+  const tickerItems = "SOFTWARE DEVELOPER ✦ FRONT END ENGINEER ✦ WEB & MOBILE APPS ✦ ";
   const fullContent = tickerItems.repeat(5);
 
   return (
