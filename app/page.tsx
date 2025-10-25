@@ -110,7 +110,7 @@ const TESTIMONIALS = [
   { id: 2, clientImage: "/images/certificates/ser-hotel.JPG", title: "EXPro Hotel Application Website Certification", description: "Completed comprehensive course on React.js, including hooks, context, and advanced patterns.", companyName: "PT Dimensi Kreasi Nusantara", rating: 5 },
   { id: 3, clientImage: "/images/certificates/ser-library.JPG", title: "Library Management Website Certification", description: "Certification in full-stack development covering MERN stack and modern web technologies.", companyName: "PT Kreasi Media", rating: 5 },
   { id: 4, clientImage: "/images/certificates/ser-todo.JPG", title: "Full Stack Mobile App Certification", description: "Completed intensive program on building scalable backend applications with Node.js and Express.", companyName: "Ginvo Studio", rating: 5 },
-  { id: 5, clientImage: "/images/certificates/ser-toeic.JPG", title: "Toeic Test Certification (2025)", description: "Certification in Python programming with focus on data structures, algorithms, and AI fundamentals.", companyName: "TOEIC", rating: 5 },
+  { id: 5, clientImage: "/images/certificates/ser-toeic.jpg", title: "Toeic Test Certification (2025)", description: "Certification in Python programming with focus on data structures, algorithms, and AI fundamentals.", companyName: "TOEIC", rating: 5 },
   { id: 6, clientImage: "/images/certificates/ser-fr1.JPG", title: "EF Course FR 1.1 Certification", description: "Certification in Python programming with focus on data structures, algorithms, and AI fundamentals.", companyName: "English First", rating: 5 },
   { id: 7, clientImage: "/images/certificates/ser-osis.JPG", title: "Student Council (Secretary) Certification", description: "Certification in Python programming with focus on data structures, algorithms, and AI fundamentals.", companyName: "Pesat Vocational School", rating: 5 },
 ];
@@ -1053,9 +1053,9 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: FaLinkedin, href: "https://linkedin.com/in/vanyashaumy", label: "LinkedIn" },
-    { icon: FaGithub, href: "https://github.com/vanyashaumy", label: "GitHub" },
+    { icon: FaGithub, href: "https://github.com/stiIlanya", label: "GitHub" },
     { icon: Instagram, href: "https://instagram.com/vanyashaumy", label: "Instagram" },
-    { icon: FaDiscord, href: "https://discord.com/users/vanyashaumy", label: "Discord" },
+    { icon: FaDiscord, href: "https://discord.com/users/cottonblush", label: "Discord" },
   ];
 
   const footerLinks = [
