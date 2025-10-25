@@ -2,79 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowUpRight, Menu, Home, Layers, User, Mail, MapPin, Instagram, Aperture, Sun, Moon } from 'lucide-react';
+import { X, ArrowUpRight, Menu, Home, Layers, User, Mail, MapPin, Instagram, Aperture } from 'lucide-react';
 import { FaGithub, FaDiscord, FaLinkedin } from "react-icons/fa";
-
-// --- CUSTOM HOOK: useTheme ---
-// Hook untuk mengelola dark mode dengan localStorage persistence
-const useTheme = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Cek preferensi tema dari localStorage saat pertama kali load
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
-
-  const toggleTheme = useCallback(() => {
-    setIsDark((prev) => {
-      const newTheme = !prev;
-      if (newTheme) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-      return newTheme;
-    });
-  }, []);
-
-  return { isDark, toggleTheme };
-};
-
-// --- THEME TOGGLE COMPONENT ---
-// Komponen tombol untuk toggle dark/light mode
-const ThemeToggle = ({ isDark, toggleTheme, className = "" }) => {
-  return (
-    <motion.button
-      onClick={toggleTheme}
-      className={`relative w-14 h-7 rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 ${
-        isDark ? 'bg-gray-700' : 'bg-gray-300'
-      } ${className}`}
-      whileTap={{ scale: 0.95 }}
-      aria-label="Toggle dark mode"
-    >
-      <motion.div
-        className={`absolute top-0.5 left-0.5 w-6 h-6 rounded-full flex items-center justify-center shadow-md ${
-          isDark ? 'bg-gray-900' : 'bg-white'
-        }`}
-        animate={{
-          x: isDark ? 28 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 30,
-        }}
-      >
-        {isDark ? (
-          <Moon size={14} className="text-yellow-300" />
-        ) : (
-          <Sun size={14} className="text-yellow-500" />
-        )}
-      </motion.div>
-    </motion.button>
-  );
-};
 
 // --- GLOBAL STYLES ---
 const globalStyles = (
@@ -122,24 +51,12 @@ const globalStyles = (
       background-size: 25px 25px;
       animation: polka-move 60s linear infinite;
     }
-
-    .dark .bg-polka-animated {
-      background-color: #1f2937;
-      background-image: radial-gradient(#374151 1.5px, transparent 0);
-    }
     
     .bg-wireframe-map {
         background-color: #111;
         background-image: repeating-linear-gradient(45deg, #222 0, #222 1px, transparent 1px, transparent 50%), repeating-linear-gradient(-45deg, #222 0, #222 1px, transparent 1px, transparent 50%);
         background-size: 20px 20px;
         background-blend-mode: overlay;
-    }
-
-    /* Dark Mode Transitions */
-    * {
-      transition-property: background-color, border-color, color, fill, stroke;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 300ms;
     }
   `}</style>
 );
@@ -152,37 +69,36 @@ const resumeData = {
     {
       title: "ABOUT ME",
       content: `Hi, I'm Vanya! I'm a software developer and front-end engineer who loves creating smooth, intuitive, and visually appealing web experiences. I'm passionate about combining creativity with technology to build interfaces that feel great to use. I enjoy working in collaborative environments where teamwork and open communication lead to better ideas and stronger results. I'm always up for solving new challenges, adapting to different tools or workflows, and learning something new every day.`,
-      type: 'paragraph'
+      type: 'paragraph' as const
     },
     {
       title: "EDUCATION",
       content: [
         { title: "PESAT VOCATIONAL SCHOOL", details: "Software Engineering" },
       ],
-      type: 'list'
+      type: 'list' as const
     },
-   {
-  title: "SKILLS",
-  content: [
-    { name: "JavaScript", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
-    { name: "React", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
-    { name: "Laravel", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
-    { name: "TailwindCSS", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-    { name: "Bootstrap", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
-    { name: "PHP", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
-    { name: "MySQL", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
-    { name: "SQLite", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" },
-    { name: "Figma", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" }
-  ],
-  type: "skills"
-}
-
+    {
+      title: "SKILLS",
+      content: [
+        { name: "JavaScript", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
+        { name: "React", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
+        { name: "Laravel", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+        { name: "TailwindCSS", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+        { name: "Bootstrap", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
+        { name: "PHP", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
+        { name: "MySQL", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
+        { name: "SQLite", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" },
+        { name: "Figma", imageUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" }
+      ],
+      type: "skills" as const
+    }
   ]
 };
 
 const projectData = [
   { id: 1, title: 'Company Profile Website', image: '/images/projects/Demo_CA.png', description: 'Company profile website for a dummy brand.', fullDescription: 'A sample company profile website built with Bootstrap as a demonstration project. It showcases company information, services, and contact details within a professional and structured layout, highlighting how corporate websites can appear clean and modern.', github: 'https://github.com/username/project-1' },
-  { id: 2, title: 'Foodie Website', image: '/images/projects/Demo_foodie.png', description: 'Restaurant landing page for Foodie.', fullDescription: 'An engaging restaurant landing page developed using HTML, CSS, and JavaScript to showcase Foodies brand identity, menu highlights, and customer reviews. The website emphasizes appealing visuals and smooth layout transitions, although it is not yet fully responsive across all devices.', github: 'https://github.com/username/project-2' },
+  { id: 2, title: 'Foodie Website', image: '/images/projects/Demo_foodie.png', description: 'Restaurant landing page for Foodie.', fullDescription: 'An engaging restaurant landing page developed using HTML, CSS, and JavaScript to showcase Foodie’s brand identity, menu highlights, and customer reviews. The website emphasizes appealing visuals and smooth layout transitions, although it is not yet fully responsive across all devices.', github: 'https://github.com/username/project-2' },
   { id: 3, title: 'Expro Hotel Website', image: '/images/projects/Demo_hotel.png', description: 'Hotel booking platform for room reservations.', fullDescription: 'A full-stack hotel booking platform built with Laravel and Bootstrap, designed to help users browse available rooms, check details, and make online reservations seamlessly. The system allows administrators to manage room availability, pricing, and customer bookings efficiently through a dedicated dashboard.', github: 'https://github.com/username/project-3' },
   { id: 4, title: 'To-Do Mobile App', image: '/images/projects/Demo_todo.png', description: 'Mobile to-do app for task management.', fullDescription: 'A full-stack mobile application built with React Native and Tailwind CSS that helps users organize and manage their daily tasks efficiently. The app provides features such as task creation, progress tracking, and completion checklists, all within a clean and user-friendly interface.', github: 'https://github.com/username/project-4' },
   { id: 5, title: 'DoTravel Website', image: '/images/projects/Demo_travel.png', description: 'Travel website for a tour agency.', fullDescription: 'A travel website developed using HTML, Tailwind CSS, and JavaScript for a tour agency to promote destinations, tour packages, and customer reviews. The website focuses on presenting travel information attractively but does not include an online booking feature.', github: 'https://github.com/username/project-5' },
@@ -253,7 +169,7 @@ const Ticker = () => {
   const fullContent = tickerItems.repeat(5);
 
   return (
-    <div className="ticker-container w-full h-8 overflow-hidden border-t border-b border-black dark:border-[#999999] text-black dark:text-[#999999] bg-white dark:bg-[#111111] transition-colors duration-300">
+    <div className="ticker-container w-full h-8 overflow-hidden border-t border-b border-black text-black bg-white">
       <div className="ticker-content py-1 text-base font-content uppercase tracking-widest whitespace-nowrap">
         <span className="inline-block text-lg px-2">{fullContent}</span>
         <span className="inline-block text-lg px-2">{fullContent}</span>
@@ -262,14 +178,14 @@ const Ticker = () => {
   );
 };
 
-const SkillLogo = ({ name, imageUrl, index }) => (
+const SkillLogo = ({ name, imageUrl, index }: { name: string; imageUrl: string; index: number }) => (
   <motion.div 
-    variants={scaleIn}
+    
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true }}
     transition={{ delay: index * 0.1 }}
-    className="flex flex-col items-center p-3 transition-transform duration-300 hover:scale-105 hover:shadow-lg rounded-lg border border-gray-100 dark:border-[#555555] will-change-transform" 
+    className="flex flex-col items-center p-3 transition-transform duration-300 hover:scale-105 hover:shadow-lg rounded-lg border border-gray-100 will-change-transform" 
     style={{ WebkitTapHighlightColor: 'transparent' }}
   >
     <img 
@@ -277,15 +193,46 @@ const SkillLogo = ({ name, imageUrl, index }) => (
       alt={`${name} Logo`}
       className="w-8 h-8 md:w-10 md:h-10 object-contain pointer-events-none"
       onError={(e) => {
-        e.target.onerror = null; 
-        e.target.src = `https://placehold.co/40x40/f0f0f0/333333?text=${name.substring(0, 1)}`;
+        const target = e.target as HTMLImageElement;
+        target.onerror = null; 
+        target.src = `https://placehold.co/40x40/f0f0f0/333333?text=${name.substring(0, 1)}`;
       }}
     />
-    <span className="text-xs mt-1 font-semibold text-gray-700 dark:text-[#777777] pointer-events-none">{name}</span>
+    <span className="text-xs mt-1 font-semibold text-gray-700 pointer-events-none">{name}</span>
   </motion.div>
 );
 
-const renderSectionContent = (section) => {
+interface ResumeSectionParagraph {
+  title: string;
+  content: string;
+  type: 'paragraph';
+}
+
+interface ResumeSectionListItem {
+  title: string;
+  details: string;
+}
+
+interface ResumeSectionList {
+  title: string;
+  content: ResumeSectionListItem[];
+  type: 'list';
+}
+
+interface ResumeSectionSkillItem {
+  name: string;
+  imageUrl: string;
+}
+
+interface ResumeSectionSkills {
+  title: string;
+  content: ResumeSectionSkillItem[];
+  type: 'skills';
+}
+
+type ResumeSection = ResumeSectionParagraph | ResumeSectionList | ResumeSectionSkills;
+
+const renderSectionContent = (section: ResumeSection) => {
   switch (section.type) {
     case 'paragraph':
       return <p className="text-sm md:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: section.content }} />;
@@ -295,14 +242,14 @@ const renderSectionContent = (section) => {
           {section.content.map((item, index) => (
             <motion.div 
               key={index}
-              variants={fadeInLeft}
+              
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
               <p className="font-semibold text-sm md:text-base">{item.details}</p>
-              <p className="text-xs md:text-sm uppercase tracking-wider text-gray-700 dark:text-[#777777]">{item.title}</p>
+              <p className="text-xs md:text-sm uppercase tracking-wider text-gray-700">{item.title}</p>
             </motion.div>
           ))}
         </div>
@@ -320,7 +267,7 @@ const renderSectionContent = (section) => {
   }
 };
 
-const DownloadCVButton = ({ isScrolled }) => (
+const DownloadCVButton = ({ isScrolled }: { isScrolled: boolean }) => (
   <motion.div
     className="cursor-pointer"
     whileTap={{ scale: 0.95 }}
@@ -328,15 +275,15 @@ const DownloadCVButton = ({ isScrolled }) => (
   >
     <div
       className={`group relative inline-flex h-[36px] items-center justify-center rounded-full py-0.5 pl-4 pr-10 font-medium shadow-xl transition-colors duration-300
-        ${isScrolled ? 'bg-neutral-50 dark:bg-[#555555] text-neutral-950 dark:text-[#999999] hover:bg-gray-200 dark:hover:bg-[#333333]' : 'bg-white dark:bg-[#333333] text-neutral-950 dark:text-[#999999] hover:bg-gray-100 dark:hover:bg-[#555555] border border-white/20 dark:border-[#555555]'}`}
+        ${isScrolled ? 'bg-neutral-50 text-neutral-950 hover:bg-gray-200' : 'bg-white text-neutral-950 hover:bg-gray-100 border border-white/20'}`}
     >
       <span className="z-10 pr-1 uppercase tracking-wider text-xs font-content">Download CV</span>
       <motion.div
-        className={`absolute right-1 inline-flex h-7 w-7 items-center justify-end rounded-full transition-[width] group-hover:w-[calc(97%-4px)] duration-300 ${isScrolled ? 'bg-neutral-300 dark:bg-gray-600' : 'bg-neutral-300 dark:bg-gray-700'}`}
+        className={`absolute right-1 inline-flex h-7 w-7 items-center justify-end rounded-full transition-[width] group-hover:w-[calc(97%-4px)] duration-300 ${isScrolled ? 'bg-neutral-300' : 'bg-neutral-300'}`}
         initial={false}
       >
         <div className="mr-2 flex items-center justify-center">
-          <svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className={`h-3 w-3 ${isScrolled ? 'text-neutral-950 dark:text-white' : 'text-neutral-950 dark:text-white'}`}>
+          <svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className={`h-3 w-3 ${isScrolled ? 'text-neutral-950' : 'text-neutral-950'}`}>
             <path d="M7.5 10.8536C7.30574 10.6583 7.30574 10.3417 7.5 10.1464L10.6464 7H2.5C2.22386 7 2 6.77614 2 6.5C2 6.22386 2.22386 6 2.5 6H10.6464L7.5 2.85355C7.30574 2.65829 7.30574 2.34171 7.5 2.14645C7.69526 1.95118 8.01184 1.95118 8.20711 2.14645L12.2071 6.14645C12.4024 6.34171 12.4024 6.65829 12.2071 6.85355L8.20711 10.8536C8.01184 11.0488 7.69526 11.0488 7.5 10.8536Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd" transform="rotate(90 7.5 7.5)" />
           </svg>
         </div>
@@ -349,7 +296,17 @@ const ParallaxBackground = () => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    interface Offset {
+      x: number;
+      y: number;
+    }
+
+    interface MouseMoveEvent extends MouseEvent {
+      clientX: number;
+      clientY: number;
+    }
+
+    const handleMouseMove = (e: MouseMoveEvent) => {
       const { clientX, clientY } = e;
       const moveX = (clientX / window.innerWidth - 0.5) * 40; 
       const moveY = (clientY / window.innerHeight - 0.5) * 40;
@@ -376,8 +333,7 @@ const ParallaxBackground = () => {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { isDark, toggleTheme } = useTheme(); // Gunakan hook useTheme
+  const [isScrolled, setIsScrolled] = useState(false); 
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -401,10 +357,10 @@ const Navbar = () => {
   const handleLinkClick = () => setIsMenuOpen(false);
   
   const innerDivClasses = `flex justify-between items-center w-full mx-auto transition-all duration-500 ease-in-out 
-    ${isScrolled ? 'max-w-full px-6 py-3 shadow-lg bg-black/80 dark:bg-[#111111]/90 border-b border-gray-700 dark:border-[#555555] rounded-none backdrop-blur-md' 
-    : 'max-w-6xl px-6 py-3 bg-white/5 dark:bg-[#111111]/20 border border-white/10 dark:border-[#555555] rounded-full shadow-2xl backdrop-blur-sm'}`;
+    ${isScrolled ? 'max-w-full px-6 py-3 shadow-lg bg-black/80 border-b border-gray-700 rounded-none backdrop-blur-md' 
+    : 'max-w-6xl px-6 py-3 bg-white/5 border border-white/10 rounded-full shadow-2xl backdrop-blur-sm'}`;
   
-  const logoColorClass = 'text-white dark:text-[#999999]';
+  const logoColorClass = isScrolled ? 'text-white' : 'text-white';
   
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out p-4 sm:p-6" style={{ padding: isScrolled ? '0' : '1rem' }}>
@@ -434,7 +390,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
                 className={`px-4 py-2 text-sm uppercase tracking-wider transition duration-300 rounded-full font-medium
-                  ${isScrolled ? 'text-white dark:text-[#999999] hover:bg-white/10 dark:hover:bg-[#555555]' : 'text-white dark:text-[#999999] hover:bg-white/90 dark:hover:bg-[#333333] hover:text-gray-900 dark:hover:text-[#999999]'}`}
+                  ${isScrolled ? 'text-white hover:bg-white/10' : 'text-white hover:bg-white/90 hover:text-gray-900'}`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }}
@@ -443,8 +399,6 @@ const Navbar = () => {
               </motion.a>
             ))}
           </div>
-          {/* Theme Toggle Button */}
-          <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
           <DownloadCVButton isScrolled={isScrolled} />
         </motion.div>
 
@@ -461,27 +415,22 @@ const Navbar = () => {
         <motion.div 
           initial="closed" 
           animate="open" 
-          variants={menuVariants}
-          className={`md:hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[calc(100%-48px)] ${isScrolled ? 'bg-black/70 dark:bg-[#111111]/80 text-white dark:text-[#999999]' : 'bg-white/10 dark:bg-[#111111]/30 text-white dark:text-[#999999]'} backdrop-blur-md rounded-lg p-4 shadow-xl border border-white/10 dark:border-[#555555]`}
+          
+          className={`md:hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[calc(100%-48px)] ${isScrolled ? 'bg-black/70 text-white' : 'bg-white/10 text-white'} backdrop-blur-md rounded-lg p-4 shadow-xl border border-white/10`}
         >
           {links.map((link) => (
             <a 
               key={link.name} 
               href={link.href} 
               onClick={handleLinkClick} 
-              className={`flex items-center justify-center py-3 text-center ${isScrolled ? 'text-white dark:text-gray-200 hover:bg-white/10 dark:hover:bg-gray-700' : 'text-white/80 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/10 dark:hover:bg-gray-800'} rounded-md transition duration-200 uppercase tracking-wider text-sm`}
+              className={`flex items-center justify-center py-3 text-center ${isScrolled ? 'text-white hover:bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10'} rounded-md transition duration-200 uppercase tracking-wider text-sm`}
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <link.icon size={16} className="mr-2"/>
               {link.name}
             </a>
           ))}
-          <div className="mt-4 border-t border-white/20 dark:border-gray-700 pt-4 flex flex-col items-center space-y-3">
-            {/* Theme Toggle for Mobile */}
-            <div className="flex items-center space-x-3">
-              <span className="text-sm text-white dark:text-gray-300">Theme</span>
-              <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
-            </div>
+          <div className="mt-4 border-t border-white/20 pt-4 flex justify-center">
             <DownloadCVButton isScrolled={isScrolled} />
           </div>
         </motion.div>
@@ -491,7 +440,24 @@ const Navbar = () => {
 };
 
 // --- PROJECTS SECTION ---
-const ProjectCard = ({ project, onClick, index }) => (
+type Project = {
+  id: number;
+  title: string;
+  image: string;
+  description: string;
+  fullDescription: string;
+  github: string;
+};
+
+const ProjectCard = ({
+  project,
+  onClick,
+  index,
+}: {
+  project: Project;
+  onClick: (project: Project) => void;
+  index: number;
+}) => (
   <motion.div 
     onClick={() => onClick(project)} 
     className="relative flex-shrink-0 w-[300px] md:w-[350px] mx-4 cursor-pointer"
@@ -502,23 +468,27 @@ const ProjectCard = ({ project, onClick, index }) => (
     whileHover={{ y: -8 }} 
     style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
   >
-    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-6 bg-neutral-900 dark:bg-[#555555] rounded-md shadow-inner border-b-2 border-neutral-700 dark:border-[#333333] z-10 pointer-events-none" />
-    <div className="relative bg-white dark:bg-[#333333] rounded-xl shadow-lg overflow-hidden transform -rotate-2 hover:rotate-0 transition-transform duration-300 ease-in-out border border-gray-100 dark:border-[#555555] will-change-transform">
+    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-6 bg-neutral-900 rounded-md shadow-inner border-b-2 border-neutral-700 z-10 pointer-events-none" />
+    <div className="relative bg-white rounded-xl shadow-lg overflow-hidden transform -rotate-2 hover:rotate-0 transition-transform duration-300 ease-in-out border border-gray-100 will-change-transform">
       <img 
         src={project.image} 
         alt={project.title} 
         className="w-full h-48 object-cover pointer-events-none"
-        onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/600x400/e0e0e0/757575?text=Image+Error`; }}
+        onError={(e) => { 
+          const target = e.target as HTMLImageElement;
+          target.onerror = null; 
+          target.src = `https://placehold.co/600x400/e0e0e0/757575?text=Image+Error`; 
+        }}
       />
       <div className="p-5 pointer-events-none">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-[#999999] mb-2">{project.title}</h3>
-        <p className="text-gray-700 dark:text-[#777777] text-sm line-clamp-2">{project.description}</p>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+        <p className="text-gray-700 text-sm line-clamp-2">{project.description}</p>
       </div>
     </div>
   </motion.div>
 );
 
-const ProjectModal = ({ project, onClose }) => (
+const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => (
   <motion.div 
     initial={{ opacity: 0 }} 
     animate={{ opacity: 1 }} 
@@ -532,11 +502,11 @@ const ProjectModal = ({ project, onClose }) => (
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }} 
       onClick={(e) => e.stopPropagation()}
-      className="relative bg-white dark:bg-[#333333] rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
     >
       <button 
         onClick={onClose} 
-        className="absolute top-3 right-3 text-gray-400 hover:text-gray-800 dark:hover:text-[#999999] transition-colors z-10 p-2 bg-white dark:bg-[#555555] rounded-full shadow-md" 
+        className="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors z-10 p-2 bg-white rounded-full shadow-md" 
         aria-label="Close modal"
       >
         <X size={24} />
@@ -545,16 +515,20 @@ const ProjectModal = ({ project, onClose }) => (
         src={project.image} 
         alt={project.title} 
         className="w-full h-64 md:h-80 object-cover rounded-t-lg"
-        onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/600x400/e0e0e0/757575?text=Image+Error`; }}
+        onError={(e) => { 
+          const target = e.target as HTMLImageElement;
+          target.onerror = null; 
+          target.src = `https://placehold.co/600x400/e0e0e0/757575?text=Image+Error`; 
+        }}
       />
       <div className="p-6 md:p-8">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-[#999999] mb-4">{project.title}</h2>
-        <p className="text-gray-700 dark:text-[#777777] mb-6 leading-relaxed">{project.fullDescription}</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">{project.title}</h2>
+        <p className="text-gray-700 mb-6 leading-relaxed">{project.fullDescription}</p>
         <a 
           href={project.github} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center px-6 py-3 bg-neutral-950 dark:bg-white text-white dark:text-black font-semibold rounded-lg shadow-md hover:bg-neutral-700 dark:hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-opacity-50"
+          className="inline-flex items-center justify-center px-6 py-3 bg-neutral-950 text-white font-semibold rounded-lg shadow-md hover:bg-neutral-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-opacity-50"
         >
           Lihat Detail
           <ArrowUpRight size={20} className="ml-2" />
@@ -565,11 +539,11 @@ const ProjectModal = ({ project, onClose }) => (
 );
 
 const ProjectsSection = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const doubledProjects = [...projectData, ...projectData];
 
   return (
-    <section id="projects" className="w-full py-10 md:py-17 overflow-hidden bg-polka-animated dark:bg-[#111111] transition-colors duration-300">
+    <section id="projects" className="w-full py-10 md:py-17 overflow-hidden bg-polka-animated">
       <motion.div 
         className="container mx-auto px-4 text-center"
         variants={staggerContainer}
@@ -578,18 +552,18 @@ const ProjectsSection = () => {
         viewport={{ once: true }}
       >
         <motion.h2 
-          variants={fadeInUp}
-          className="text-3xl md:text-4xl font-extrabold text-black dark:text-[#999999] uppercase mb-3 font-content transition-colors duration-300"
+          
+          className="text-3xl md:text-4xl font-extrabold text-black uppercase mb-3 font-content"
         >
           Projects ✦
         </motion.h2>
         <motion.p 
-          variants={fadeInUp}
-          className="text-md md:text-md text-black dark:text-[#777777] max-w-lg mx-auto font-content transition-colors duration-300"
+          
+          className="text-md md:text-md text-black max-w-lg mx-auto font-content"
         >
           Several selected projects I've worked on, ranging from web applications to analytics dashboards. 
         </motion.p>
-        <motion.p  variants={fadeInUp} className="text-md md:text-md text-black dark:text-gray-300 max-w-lg mx-auto mb-10 font-bold transition-colors duration-300">Tap for more details.</motion.p>
+        <motion.p   className="text-md md:text-md text-black max-w-lg mx-auto mb-10 font-bold">Tap for more details.</motion.p>
       </motion.div>
       <div className="w-full overflow-hidden py-7">
         <div className="w-full" style={{ perspective: '1200px', transform: 'rotateY(-3deg) scale(0.95)', transformOrigin: 'left center' }}>
@@ -608,8 +582,22 @@ const ProjectsSection = () => {
 };
 
 // --- CERTIFICATES SECTION ---
-const TestimonialCard = ({ testimonial, isActive }) => {
-  const baseClasses = "flex flex-col items-center p-6 md:p-8 bg-white dark:bg-[#333333] rounded-2xl shadow-xl transition-all duration-500 ease-in-out w-full text-center cursor-pointer will-change-transform";
+interface Testimonial {
+  id: number;
+  clientImage: string;
+  title: string;
+  description: string;
+  companyName: string;
+  rating: number;
+}
+
+interface TestimonialCardProps {
+  testimonial: Testimonial;
+  isActive: boolean;
+}
+
+const TestimonialCard = ({ testimonial, isActive }: TestimonialCardProps) => {
+  const baseClasses = "flex flex-col items-center p-6 md:p-8 bg-white rounded-2xl shadow-xl transition-all duration-500 ease-in-out w-full text-center cursor-pointer will-change-transform";
   const activeClasses = isActive ? "scale-100 opacity-100 shadow-2xl z-10" : "scale-90 opacity-50 shadow-md"; 
   const hoverClasses = isActive ? "hover:-translate-y-2 hover:shadow-2xl" : "hover:opacity-70";
 
@@ -629,12 +617,16 @@ const TestimonialCard = ({ testimonial, isActive }) => {
           src={testimonial.clientImage} 
           alt={`Sertifikat dari ${testimonial.companyName}`}
           className="w-full h-full max-w-xs rounded-lg shadow-md object-contain" 
-          onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/400x250/e0e0e0/757575?text=Sertifikat+Image+Error`; }}
+          onError={(e) => { 
+            const target = e.target as HTMLImageElement;
+            target.onerror = null; 
+            target.src = `https://placehold.co/400x250/e0e0e0/757575?text=Sertifikat+Image+Error`; 
+          }}
         />
       </div>
-      <div className="mt-auto pt-4 border-t border-gray-200 dark:border-[#555555] w-full pointer-events-none">
-        <p className="text-base md:text-lg font-bold text-gray-900 dark:text-[#999999] mb-2 leading-snug">{testimonial.title}</p>
-        <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-[#777777]">{testimonial.companyName}</p>
+      <div className="mt-auto pt-4 border-t border-gray-200 w-full pointer-events-none">
+        <p className="text-base md:text-lg font-bold text-gray-900 mb-2 leading-snug">{testimonial.title}</p>
+        <p className="text-xs md:text-sm font-medium text-gray-500">{testimonial.companyName}</p>
       </div>
     </motion.div>
   );
@@ -665,7 +657,7 @@ const TestimonialSection = () => {
   }, [activeIndex, totalCards]);
 
   return (
-    <section id="clients" className="w-full py-10 md:py-17 flex flex-col justify-center items-center bg-white dark:bg-[#111111] font-content transition-colors duration-300">
+    <section id="clients" className="w-full py-10 md:py-17 flex flex-col justify-center items-center bg-white font-content">
       <div className="container mx-auto px-4 max-w-7xl">
         <motion.header 
           className="text-center mb-12"
@@ -675,14 +667,14 @@ const TestimonialSection = () => {
           viewport={{ once: true }}
         >
           <motion.h2 
-            variants={fadeInUp}
-            className="text-3xl md:text-4xl font-extrabold text-black dark:text-[#999999] mb-3 uppercase transition-colors duration-300"
+            
+            className="text-3xl md:text-4xl font-extrabold text-black mb-3 uppercase"
           >
             CERTIFICATES ✦
           </motion.h2>
           <motion.p 
-            variants={fadeInUp}
-            className="text-md md:text-md text-black dark:text-[#777777] max-w-2xl mx-auto transition-colors duration-300"
+            
+            className="text-md md:text-md text-black max-w-2xl mx-auto"
           >
             Official proof of qualifications and technical skills achieved.
           </motion.p>
@@ -703,20 +695,20 @@ const TestimonialSection = () => {
           
           <button 
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-3 bg-white dark:bg-[#333333] rounded-full shadow-xl hover:bg-gray-100 dark:hover:bg-[#555555] transition-all duration-300 z-20 hidden md:block hover:scale-110"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-3 bg-white rounded-full shadow-xl hover:bg-gray-100 transition-all duration-300 z-20 hidden md:block hover:scale-110"
             aria-label="Previous testimonial"
           >
-            <svg className="w-6 h-6 text-neutral-950 dark:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-neutral-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
 
           <button 
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-3 bg-white dark:bg-[#333333] rounded-full shadow-xl hover:bg-gray-100 dark:hover:bg-[#555555] transition-all duration-300 z-20 hidden md:block hover:scale-110"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-3 bg-white rounded-full shadow-xl hover:bg-gray-100 transition-all duration-300 z-20 hidden md:block hover:scale-110"
             aria-label="Next testimonial"
           >
-            <svg className="w-6 h-6 text-neutral-950 dark:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-neutral-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </button>
@@ -727,7 +719,7 @@ const TestimonialSection = () => {
             <button 
               key={index} 
               onClick={() => setActiveIndex(index)}
-              className={"w-3 h-3 rounded-full transition-colors duration-300 " + (index === activeIndex ? 'bg-neutral-950 dark:bg-[#999999] w-6' : 'bg-gray-300 dark:bg-[#555555]')}
+              className={"w-3 h-3 rounded-full transition-colors duration-300 " + (index === activeIndex ? 'bg-neutral-950 w-6' : 'bg-gray-300')}
               aria-label={`Go to testimonial ${index + 1}`}
             />
           ))}
@@ -736,19 +728,19 @@ const TestimonialSection = () => {
         <div className="flex justify-between md:hidden mt-8 max-w-xs mx-auto">
           <button 
             onClick={prevSlide}
-            className="p-3 bg-white dark:bg-[#333333] rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-[#555555] transition-all duration-300"
+            className="p-3 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300"
             aria-label="Previous testimonial (Mobile)"
           >
-            <svg className="w-5 h-5 text-neutral-950 dark:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-neutral-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
           <button 
             onClick={nextSlide}
-            className="p-3 bg-white dark:bg-[#333333] rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-[#555555] transition-all duration-300"
+            className="p-3 bg-white rounded-full shadow-md hover:bg-gray-100 transition-all duration-300"
             aria-label="Next testimonial (Mobile)"
           >
-            <svg className="w-5 h-5 text-neutral-950 dark:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-neutral-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </button>
@@ -759,8 +751,24 @@ const TestimonialSection = () => {
 };
 
 // --- CONTACT SECTION ---
-const UnderlineInput = ({ name, type = 'text', placeholder, isTextarea = false, value, onChange }) => {
-  const commonClasses = "w-full pt-4 pb-2 border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-black dark:focus:border-white text-lg placeholder-gray-500 dark:placeholder-gray-500 transition-all duration-300 bg-transparent font-content";
+interface UnderlineInputProps {
+  name: string;
+  type?: string;
+  placeholder: string;
+  isTextarea?: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+}
+
+const UnderlineInput = ({
+  name,
+  type = 'text',
+  placeholder,
+  isTextarea = false,
+  value,
+  onChange,
+}: UnderlineInputProps) => {
+  const commonClasses = "w-full pt-4 pb-2 border-b border-gray-300 focus:outline-none focus:border-black text-lg placeholder-gray-500 transition-all duration-300 bg-transparent font-content";
 
   return (
     <div className="mb-6">
@@ -801,7 +809,7 @@ const ContactSection = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -821,25 +829,37 @@ const ContactSection = () => {
     visible: { y: 0, opacity: 1 },
   };
 
-  const handleChange = (e) => {
+  interface HandleChangeEvent extends React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> {}
+
+  const handleChange = (e: HandleChangeEvent): void => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
     
-  const handleSubmit = async (e) => {
+  interface FormData {
+    name: string;
+    email: string;
+    message: string;
+  }
+
+  type SubmitStatus = 'success' | 'error' | null;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
+      // Create mailto link
       const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       );
       const mailtoLink = `mailto:vanyashaumy@gmail.com?subject=${subject}&body=${body}`;
       
+      // Open email client
       window.location.href = mailtoLink;
       
       setSubmitStatus('success');
@@ -852,7 +872,13 @@ const ContactSection = () => {
     }
   };
 
-  const handleMouseMove = (e) => {
+  interface MouseMoveEvent extends React.MouseEvent<HTMLDivElement, MouseEvent> {
+    currentTarget: HTMLDivElement;
+    clientX: number;
+    clientY: number;
+  }
+
+  const handleMouseMove = (e: MouseMoveEvent): void => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -873,17 +899,17 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="w-full min-h-screen flex items-center justify-center p-4 sm:p-6 font-content bg-white dark:bg-[#111111] transition-colors duration-300">
+    <section id="contact" className="w-full min-h-screen flex items-center justify-center p-4 sm:p-6 font-content">
       <motion.div
-        className="w-full max-w-7xl bg-[#1c1c1c] dark:bg-[#111111] shadow-2xl overflow-hidden relative rounded-3xl transition-colors duration-300"
-        variants={containerVariants}
+        className="w-full max-w-7xl bg-[#1c1c1c] shadow-2xl overflow-hidden relative rounded-3xl"
+        
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className="grid lg:grid-cols-2 min-h-[500px]">
           <motion.div
-            className="relative flex flex-col text-white dark:text-[#999999] bg-wireframe-map dark:bg-[#333333] p-8 sm:p-12 lg:p-16 transition-colors duration-300"
+            className="relative flex flex-col text-white bg-wireframe-map p-8 sm:p-12 lg:p-16"
             variants={itemVariants}
           >
             <div className="relative z-20 flex flex-col h-full justify-between">
@@ -931,9 +957,9 @@ const ContactSection = () => {
             </div>
           </motion.div>
 
-          <div className="relative flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-gray-50 dark:bg-[#111111] transition-colors duration-300" style={{ perspective: '1500px' }}>
+          <div className="relative flex items-center justify-center p-8 sm:p-12 lg:p-16" style={{ perspective: '1500px' }}>
             <motion.div
-              className="bg-white dark:bg-[#333333] text-gray-900 dark:text-[#999999] p-8 sm:p-10 lg:p-12 shadow-2xl w-full max-w-md lg:max-w-lg rounded-2xl transition-colors duration-300"
+              className="bg-white text-gray-900 p-8 sm:p-10 lg:p-12 shadow-2xl w-full max-w-md lg:max-w-lg rounded-2xl"
               variants={itemVariants}
               style={{
                 position: 'relative',
@@ -952,10 +978,10 @@ const ContactSection = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
-              <h2 className="uppercase tracking-widest text-black dark:text-[#999999] text-sm font-semibold mb-2 transition-colors duration-300">
+              <h2 className="uppercase tracking-widest text-black text-sm font-semibold mb-2">
                 LET'S WORK TOGETHER
               </h2>
-              <p className="text-xs text-gray-600 dark:text-[#777777] mb-8 transition-colors duration-300">
+              <p className="text-xs text-gray-600 mb-8">
                 Have a project in mind? I'm ready to help bring your technical vision to life
               </p>
 
@@ -1005,7 +1031,7 @@ const ContactSection = () => {
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-black dark:bg-white text-white dark:text-black py-3 px-10 font-medium text-sm uppercase tracking-wider hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-300 rounded-lg w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-black text-white py-3 px-10 font-medium text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-lg w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
                     whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                   >
@@ -1042,7 +1068,7 @@ const Footer = () => {
 
   return (
     <motion.footer 
-      className="bg-neutral-200 dark:bg-[#111111] text-neutral-800 dark:text-[#999999] py-12 px-6 md:px-20 font-content transition-colors duration-300"
+      className="bg-neutral-200 text-neutral-800 py-12 px-6 md:px-20 font-content"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
@@ -1052,28 +1078,28 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-10">
           <motion.div 
             className="space-y-4"
-            variants={fadeInUp}
+            
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold tracking-wider text-neutral-700 dark:text-[#777777] transition-colors duration-300">
+            <h3 className="text-2xl font-bold tracking-wider text-neutral-700">
               VANYA SHAUMY
             </h3>
-            <p className="text-sm text-neutral-500 dark:text-[#777777] leading-relaxed transition-colors duration-300">
+            <p className="text-sm text-neutral-500 leading-relaxed">
               Software Developer specializing in full-stack web development, mobile applications, and cloud solutions.
             </p>
           </motion.div>
 
           <motion.div 
             className="space-y-4 md:ml-20"
-            variants={fadeInUp}
+            
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-700 dark:text-gray-300 transition-colors duration-300">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-700">
               Quick Links
             </h4>
             <ul className="space-y-2">
@@ -1081,7 +1107,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-gray-100 transition-colors duration-300"
+                    className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
                   >
                     {link.name}
                   </a>
@@ -1092,22 +1118,22 @@ const Footer = () => {
 
           <motion.div 
             className="space-y-4"
-            variants={fadeInUp}
+           
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-700 dark:text-gray-300 transition-colors duration-300">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-700">
               Get In Touch
             </h4>
-            <div className="space-y-2 text-sm text-neutral-500 dark:text-gray-400 transition-colors duration-300">
+            <div className="space-y-2 text-sm text-neutral-500">
               <p className="flex items-center">
-                <Mail size={16} className="mr-2 text-neutral-500 dark:text-gray-400" />
+                <Mail size={16} className="mr-2 text-neutral-500" />
                 vanyashaumy@gmail.com
               </p>
               <p className="flex items-center">
-                <MapPin size={16} className="mr-2 text-neutral-500 dark:text-gray-400" />
+                <MapPin size={16} className="mr-2 text-neutral-500" />
                 Bogor, Indonesia
               </p>
             </div>
@@ -1120,7 +1146,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-neutral-300 dark:bg-[#555555] flex items-center justify-center text-neutral-700 dark:text-[#777777] hover:bg-neutral-400 dark:hover:bg-[#333333] hover:text-neutral-900 dark:hover:text-[#999999] transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-400 hover:text-neutral-900 transition-all duration-300"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -1131,15 +1157,15 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        <div className="border-t border-neutral-400 dark:border-[#555555] my-8 transition-colors duration-300"></div>
+        <div className="border-t border-neutral-400 my-8"></div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-neutral-600 dark:text-gray-400 space-y-4 md:space-y-0 transition-colors duration-300">
+        <div className="flex flex-col md:flex-row justify-between items-center text-sm text-neutral-600 space-y-4 md:space-y-0">
           <p>© {currentYear} Vanya Shaumy. All rights reserved.</p>
           <div className="flex space-x-6">
-            <a href="#" className="hover:text-neutral-900 dark:hover:text-gray-100 transition-colors duration-300">
+            <a href="#" className="hover:text-neutral-900 transition-colors duration-300">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-neutral-900 dark:hover:text-gray-100 transition-colors duration-300">
+            <a href="#" className="hover:text-neutral-900 transition-colors duration-300">
               Terms of Service
             </a>
           </div>
@@ -1156,7 +1182,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden font-content bg-white dark:bg-[#111111] transition-colors duration-300">
+    <div className="min-h-screen w-full relative overflow-hidden font-content">
       {globalStyles}
       <Navbar />
       
@@ -1197,13 +1223,13 @@ export default function App() {
         </motion.footer>
       </section>
       
-      <section id="resume" className="relative bg-white dark:bg-[#111111] text-black dark:text-[#999999] z-20 transition-colors duration-300">
+      <section id="resume" className="relative bg-white text-black z-20">
         <Ticker />
         <main className="px-4 sm:px-8 md:px-12 lg:px-20 py-8 md:py-16">
           <div className="md:grid md:grid-cols-3 gap-10 lg:gap-20">
             <motion.section 
-              className="col-span-1 border-b border-black dark:border-[#555555] md:border-b-0 pb-8 md:pb-0 flex flex-col items-center md:items-start md:block transition-colors duration-300"
-              variants={fadeInLeft}
+              className="col-span-1 border-b border-black md:border-b-0 pb-8 md:pb-0 flex flex-col items-center md:items-start md:block"
+              
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -1219,12 +1245,16 @@ export default function App() {
                 <span className="inline-block text-base font-content tracking-normal font-medium mt-2 md:mt-0 md:align-top md:ml-1 md:text-base">(17)</span>
               </h1>
               
-              <div className="w-full h-auto rounded-3xl max-w-[200px] aspect-[4/5] p-2 border border-black dark:border-[#555555] my-2 mx-auto md:mx-0 transition-colors duration-300">
+              <div className="w-full h-auto rounded-3xl max-w-[200px] aspect-[4/5] p-2 border border-black my-2 mx-auto md:mx-0">
                 <img 
                   src="/images/vanya.jpg" 
                   alt="Vanya Shaumy Profile"
                   className="w-full h-full object-cover rounded-3xl"
-                  onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/200x250/f0f0f0/333333?text=Image+Error"; }}
+                  onError={(e) => { 
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null; 
+                    target.src = "https://placehold.co/200x250/f0f0f0/333333?text=Image+Error"; 
+                  }}
                 />
               </div>
             </motion.section>
@@ -1240,7 +1270,7 @@ export default function App() {
                 <motion.div 
                   key={sectionIndex} 
                   className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8"
-                  variants={fadeInRight}
+                  
                 >
                   <h2 className="col-span-1 font-content font-bold uppercase tracking-wider text-sm md:text-base pt-1">
                     {section.title}
