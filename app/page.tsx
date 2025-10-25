@@ -1247,7 +1247,7 @@ export default function App() {
               
               <div className="w-full h-auto rounded-3xl max-w-[200px] aspect-[4/5] p-2 border border-black my-2 mx-auto md:mx-0">
                 <img 
-                  src="/images/vanya.jpg" 
+                  src="/images/vanya.JPG" 
                   alt="Vanya Shaumy Profile"
                   className="w-full h-full object-cover rounded-3xl"
                   onError={(e) => { 
