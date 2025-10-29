@@ -321,7 +321,7 @@ const ParallaxBackground = () => {
       <motion.div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-300 ease-out"
         style={{
-          backgroundImage: "url('/images/bg4.jpg')",
+          backgroundImage: "url('/images/bgv.JPG')",
           transform: `translate(${offset.x}px, ${offset.y}px) scale(1.1)`, 
           filter: 'grayscale(100%) contrast(1.2) blur(6px)',
         }}
@@ -1247,7 +1247,7 @@ export default function App() {
               
               <div className="w-full h-auto rounded-3xl max-w-[200px] aspect-[4/5] p-2 border border-black my-2 mx-auto md:mx-0">
                 <img 
-                  src="/images/vanya.JPG" 
+                  src="/images/resume.JPG" 
                   alt="Vanya Shaumy Profile"
                   className="w-full h-full object-cover rounded-3xl"
                   onError={(e) => { 
