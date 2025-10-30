@@ -950,7 +950,7 @@ const ContactSection = () => {
                 <a href="https://instagram.com/vanyaasha" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                   <Instagram size={18} />
                 </a>
-                <a href="https://linkedin.com/in/vanya-shaumy" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                <a href="www.linkedin.com/in/vanya-shaumy-b1473538a" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                   <FaLinkedin size={18} />
                 </a>
               </motion.div>
@@ -1052,7 +1052,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: FaLinkedin, href: "https://linkedin.com/in/vanyashaumy", label: "LinkedIn" },
+    { icon: FaLinkedin, href: "www.linkedin.com/in/vanya-shaumy-b1473538a", label: "LinkedIn" },
     { icon: FaGithub, href: "https://github.com/stiIlanya", label: "GitHub" },
     { icon: Instagram, href: "https://instagram.com/vanyashaumy", label: "Instagram" },
     { icon: FaDiscord, href: "https://discord.com/users/cottonblush", label: "Discord" },
